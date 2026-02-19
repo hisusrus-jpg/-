@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "id": "chatvoicefilter",
+  "version": "${version}",
+  "name": "Chat Voice Filter",
+  "description": "Configurable chat speech with voice selection and player filters.",
+  "authors": [
+    "Codex"
+  ],
+  "contact": {},
+  "license": "MIT",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "ru.tlauncher.chatvoicefilter.ChatVoiceFilterMod"
+    ],
+    "modmenu": [
+      "ru.tlauncher.chatvoicefilter.ModMenuIntegration"
+    ]
+  },
+  "depends": {
+    "fabricloader": ">=0.16.0",
+    "minecraft": "1.21.7",
+    "java": ">=21",
+    "fabric-api": "*",
+    "cloth-config": "*",
+    "modmenu": "*"
+  }
+}
