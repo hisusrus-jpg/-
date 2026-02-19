@@ -9,31 +9,93 @@
   - `POWERSHELL` (Windows TTS, можно выбрать голос);
   - `VANILLA_NARRATOR` (обычный диктор Minecraft).
 
-## Как получить готовый файл мода (.jar)
+---
+
+## Полная инструкция по установке (TLauncher + Fabric)
+
+### 1) Подготовь версию игры
+
+1. Открой **TLauncher**.
+2. В списке версий выбери **Fabric 1.21.7**.
+3. Один раз запусти игру на этой версии и закрой её (чтобы создались нужные папки).
+
+### 2) Скачай готовый мод `.jar`
+
+Есть 2 варианта:
+
+#### Вариант A (рекомендуется): скачать готовый файл из GitHub Actions
 
 1. Открой вкладку **Actions** в репозитории.
-2. Запусти workflow **Build Fabric Mod Jar** (кнопка `Run workflow`).
-3. После завершения скачай артефакт **chatvoicefilter-mod-jar**.
-4. Внутри будет готовый файл `chatvoicefilter-<version>.jar`.
-5. Скопируй этот `.jar` в папку `.minecraft/mods` (TLauncher/Fabric).
+2. Запусти workflow **Build Fabric Mod Jar** (`Run workflow`).
+3. Дождись статуса **Success**.
+4. Скачай артефакт **chatvoicefilter-mod-jar**.
+5. Распакуй архив и возьми файл вида `chatvoicefilter-<version>.jar`.
 
-> Это самый простой вариант: просто скачать готовый `.jar` и закинуть в `mods`.
+#### Вариант B: локальная сборка на ПК
 
-## Настройка в игре
+```bash
+./gradlew build
+```
 
-Открой Mod Menu → Chat Voice Filter.
+Готовый файл будет в `build/libs`.
 
-Доступные настройки:
+### 3) Установи зависимости (обязательно)
 
-- **Enable speech** — включить/выключить мод.
-- **Speak player name** — добавлять ник в начало озвучки.
-- **Speak system messages** — озвучивать системные сообщения.
-- **Player filter mode** — `ALL`, `ONLY_LIST`, `EXCLUDE_LIST`.
-- **Player list** — список ников (для режимов фильтра).
-- **Speech backend** — `POWERSHELL` или `VANILLA_NARRATOR`.
-- **Windows voice name** — имя голоса Windows (например `Microsoft Irina Desktop`).
-- **Speech rate** — скорость `-10..10`.
-- **Volume** — громкость `0..100`.
+Для работы мода в папке `mods` должны быть:
+
+- **Fabric API**
+- **Mod Menu**
+- **Cloth Config**
+- сам `chatvoicefilter-<version>.jar`
+
+> Если не положить зависимости, мод не загрузится.
+
+### 4) Куда кидать моды в TLauncher
+
+Папка обычно такая:
+
+- Windows: `%APPDATA%\.minecraft\mods`
+- Linux: `~/.minecraft/mods`
+- macOS: `~/Library/Application Support/minecraft/mods`
+
+Если используешь отдельную директорию TLauncher-сборки — клади в её `mods`.
+
+### 5) Запусти игру
+
+1. В TLauncher выбери **Fabric 1.21.7**.
+2. Запусти игру.
+3. Проверь, что в списке модов есть **Chat Voice Filter**.
+
+---
+
+## Первичная настройка мода
+
+Открой: **Mod Menu → Chat Voice Filter**.
+
+Рекомендуемый быстрый старт:
+
+1. `Enable speech` = ON
+2. `Speech backend` = `POWERSHELL` (если Windows) или `VANILLA_NARRATOR`
+3. `Player filter mode`:
+   - `ALL` — озвучивать всех
+   - `ONLY_LIST` — только игроков из списка
+   - `EXCLUDE_LIST` — всех, кроме списка
+4. В `Player list` добавь нужные ники (если выбран `ONLY_LIST`/`EXCLUDE_LIST`).
+5. При необходимости настрой `Windows voice name`, `Speech rate`, `Volume`.
+
+---
+
+## Как настроить «озвучивать только одного игрока»
+
+Пример: только сообщения от `BestFriend123`.
+
+1. `Player filter mode` = `ONLY_LIST`
+2. `Player list` = `BestFriend123`
+3. Сохрани настройки.
+
+Теперь озвучка будет только для этого ника.
+
+---
 
 ## Как узнать имена доступных голосов в Windows
 
@@ -44,16 +106,17 @@ Add-Type -AssemblyName System.Speech
 (New-Object System.Speech.Synthesis.SpeechSynthesizer).GetInstalledVoices().VoiceInfo | Select-Object Name, Culture
 ```
 
-## Локальная сборка
+Скопируй имя из столбца `Name` в настройку `Windows voice name`.
 
-```bash
-./gradlew build
-```
+---
 
-или
+## Если мод не работает
 
-```bash
-gradle build
-```
+Проверь по шагам:
 
-Готовый JAR будет в `build/libs`.
+1. Точно запущена **Fabric 1.21.7**.
+2. В `mods` лежат зависимости: Fabric API + Mod Menu + Cloth Config.
+3. Версии модов подходят под Minecraft 1.21.7.
+4. В настройках мода включен `Enable speech`.
+5. Если используешь фильтр `ONLY_LIST`, ник добавлен без ошибок.
+
