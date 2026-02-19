@@ -1,0 +1,14 @@
+{
+  "chatvoicefilter.title": "Chat Voice Filter",
+  "chatvoicefilter.category.general": "General",
+  "chatvoicefilter.category.speech": "Speech",
+  "chatvoicefilter.enabled": "Enable speech",
+  "chatvoicefilter.includePlayerName": "Speak player name",
+  "chatvoicefilter.includeSystem": "Speak system messages",
+  "chatvoicefilter.filterMode": "Player filter mode",
+  "chatvoicefilter.playerList": "Player list",
+  "chatvoicefilter.backend": "Speech backend",
+  "chatvoicefilter.voice": "Windows voice name",
+  "chatvoicefilter.rate": "Speech rate",
+  "chatvoicefilter.volume": "Volume"
+}
